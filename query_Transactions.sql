@@ -1,17 +1,12 @@
 /* 
 Question 1
-Write the structure of a query to create or replace a stored procedure called UPDATE_LEADERS_SCORE 
-that takes a in_School_ID parameter as an integer and a in_Leader_Score parameter as an integer.
+Update your stored procedure definition. 
+Add a generic ELSE clause to the IF statement that rolls back the current work 
+if the score did not fit any of the preceding categories.
 
 Question 2
-Inside your stored procedure, write a SQL statement to update the Leaders_Score 
-field in the CHICAGO_PUBLIC_SCHOOLS table for the school identified by in_School_ID 
-to the value in the in_Leader_Score parameter.
-
-Question 3
-Inside your stored procedure, write a SQL IF statement to update the Leaders_Icon field
-in the CHICAGO_PUBLIC_SCHOOLS table for the school identified by in_School_ID 
-using the following information. 
+Update your stored procedure definition again. 
+Add a statement to commit the current unit of work at the end of the procedure.
 */
 
 DELIMITER //
@@ -47,15 +42,9 @@ BEGIN
         SET Leaders_Icon = 'Very Weak'
         WHERE School_ID = in_School_ID;
 
-    END IF;
+    ELSE
+        ROLLBACK;
+
+    END IF
+    COMMIT;
 END //
-
-/* 
-Question 4
-Write a query to call the stored procedure, 
-passing a valid school ID and a leader score of 50, 
-to check that the procedure works as expected.
-*/
-CALL UPDATE_LEADER_SCORE(610084,50);
-
-DELIMITER ;
